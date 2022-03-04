@@ -6,7 +6,7 @@ We can also set the RPC URL to `http://api.testnet.solana.com` to connect to the
 
 ## spl-token command-line utility
 
-All these functionalities are also available with JavaScript.
+All these functionalities are also available with JavaScript bundling.
 
   - Creating fungible token - `spl-token create-token`
   - Show supply of a fungible  - `spl-token supply <token-unique-identifier>`
