@@ -15,7 +15,7 @@ All these functionalities are also available with JavaScript bundling.
   - Show all tokens owned by an account - `spl-token accounts`
   - Mint tokens - `spl-token mint <token-unique-identifier> <supply-to-mint>`
   - Wrap SOL in a Token - `spl-token wrap <number-of-SOL-to-wrap>`
-  - Unwrap token back to SOL = `spl-token unwrap <recipient-adress>`
+  - Unwrap token back to SOL - `spl-token unwrap <recipient-adress>`
   - Transfer tokens to another user - `spl-token transfer <token-unique-identifier> <amount> <recipient-adress>`
   - Transfer tokens to another user, with sender-funding - `spl-token transfer --fund-recipient <token-unique-identifier> <amount> <recipient-adress>`
   - Create Non-Fungible Token - `spl-token create-token --decimals 0`
