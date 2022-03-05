@@ -6,7 +6,7 @@ We can also set the RPC URL to `http://api.testnet.solana.com` to connect to the
 
 ## spl-token command-line utility
 
-All these functionalities are also available with JavaScript bundling.
+All these functionalities are also available with a JavaScript binding.
 
   - Creating fungible token - `spl-token create-token`
   - Show supply of a fungible  - `spl-token supply <token-unique-identifier>`
@@ -47,4 +47,50 @@ Token Account : DE2Q31HCvqBZvZTkZgukLvDTHYDDekkRPM67wEDzFjmT
 
 NFT : 2Ywo82j5uJKyKDQWyHhXAaEHEycWVy4uPWpu1XbcyNu8
 
-NFT Account :  5hCkfWLgrt2hWVrkpJTtQQA1TZNkyyVrQjNyd9bZy8mc
+
+## Rust program structure 
+
+### Solana depencies
+
+The two programs (`cli` and `client`) have the fallowing dependecy in commun :
+- `solana-sdk`
+- `spl-token` (the `client` use the 2022 version))
+- `spl-associated-token-account`
+- `solana-client`
+- `spl-memo`
+
+The `client` library have `solana-program-test` as an additional dependency.
+
+The `cli` program have as additional dependencies :
+- `solana-account-decoder`
+- `solana-clap-utils`
+- `solana-cli-config`
+- `solana-cli-output`
+- `solana-logger`
+- `solana-remote-wallet`
+- `solana-transaction-status` 
+
+
+
+### Structures
+
+- `cli` - Command-line utility interface program
+  - `main.rs` 
+    - Import dependencies and modules of the program. 
+    - Define contants of the commands and arguments taken by the cli.
+    - Functions relatives to the differents commands inside the `main` function of the program.
+    - Format Output.
+  - `bench.rs` 
+    - The `bench` subcommand and process command.
+    - Get Token address and token validation functions.
+    - Create and close accounts commands.
+    - Deposit into or withdraw from commands.
+    - Send message function.
+  - `config.rs` - Configurations management with default behaviors.
+  - `output.rs` - Various Display types for command outputs.
+  - `rpc_client_utils.rs` - Spinner and progress bar functions.
+  - `sort.rs` - Sort and parse token accounts.
+- `client` - RPC Client.
+  - `lib.rs` - List the modules of the librairy.
+  - `client.rs` - Transactions and accounts operations executed by the RPC client.
+  - `token.rs` - Tokens operation executed by the RPC client.
