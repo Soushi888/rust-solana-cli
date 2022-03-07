@@ -1,5 +1,5 @@
 [package]
-name = "solcial-challenge"
+name = "rust-solana-libp2p"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 libp2p = "0.43.0"
+clap = "2.33.3"
+serde = "1.0.136"

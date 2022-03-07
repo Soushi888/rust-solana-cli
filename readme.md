@@ -4,11 +4,11 @@ This program is of Proof of Concept for creating, minting and register a token n
 
 ## Technologies used
 
-- Rust
-- libp2p
-  - websocket
-- Solana Token Program
-- Solana Name Service
+- [Rust](https://www.rust-lang.org)
+- [libp2p](https://docs.rs/libp2p/latest/libp2p/index.html)
+  - [websocket](https://docs.rs/libp2p/latest/libp2p/websocket/index.html)
+- [Solana Token Program](https://github.com/solana-labs/solana-program-library/tree/master/token)
+- [Solana Name Service](https://spl.solana.com/name-service)
 
 ## To do
 
