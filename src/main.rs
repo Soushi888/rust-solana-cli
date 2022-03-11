@@ -27,17 +27,16 @@ fn main() {
         .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("create-token") {
-        println!("{:?}", matches);
         create_token(matches.value_of("name").unwrap().to_string());
     } else if let Some(matches) = matches.subcommand_matches("show-account") {
-        show_account();
+        let show_account_command = shell_command::run_shell_command("spl-token accounts").unwrap();
+        println!("Account : {}", show_account_command);
     } else {
         println!("rust-solana-libp2p is a program for creating a Solana Toekn (SPL) on the Solana Testnet and register its name.");
     }
 }
 
 fn create_token(token_name: String) {
-    println!("Token creation !");
     println!("Token name : {:?}", token_name);
 
     let check_if_wallet = shell_command::run_shell_command("solana config get").unwrap();
@@ -51,16 +50,14 @@ fn create_token(token_name: String) {
     let create_account_commande = shell_command::run_shell_command(&*format!("spl-token create-account {}", created_token_hash)).unwrap();
     let mut create_account_result = create_account_commande.split(" ");
     let created_account_hash = create_account_result.nth(2).unwrap().to_string().replace("\n\nSignature:", "");
-    println!("Created Account Hash :  {}", created_account_hash);
+    println!("Created Account Hash :  {}\n", created_account_hash);
 
     let mint_tokens_command = shell_command::run_shell_command(&*format!("spl-token mint {} 10000000 {}", created_token_hash, created_account_hash)).unwrap();
     println!("{}", mint_tokens_command);
 
+    let disable_mint_tokens_command = shell_command::run_shell_command(&*format!("spl-token authorize {} mint --disable", created_token_hash)).unwrap();
+    println!("{}", disable_mint_tokens_command);
+
     let show_balance_command = shell_command::run_shell_command(&*format!("spl-token balance {}", created_token_hash)).unwrap();
     println!("Balance : {}", show_balance_command);
-}
-
-fn show_account() {
-    let show_account_command = shell_command::run_shell_command("spl-token accounts").unwrap();
-    println!("Account : {}", show_account_command);
 }

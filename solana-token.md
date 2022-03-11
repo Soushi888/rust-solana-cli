@@ -1,7 +1,7 @@
 # [Solana Token Program features](https://github.com/solana-labs/solana-program-library/tree/master/token)
 
 First, for using the Solana programs, we need to install and configure the `Solana Toolchain`.
-For that, once the tool chain installed, we can use the command `solana-keygen new` for creating a keypair.
+For that, once the tool chain installed, you can use the command `solana-keygen new` for creating a keypair.
 We can also set the RPC URL to `http://api.testnet.solana.com` to connect to the testnet.
 
 ## spl-token command-line utility
