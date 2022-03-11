@@ -1,10 +1,15 @@
-// use libp2p::websocket;
+use libp2p::{identity, Multiaddr, PeerId, Swarm};
+use libp2p::ping::{Ping, PingConfig};
+use libp2p::swarm::SwarmEvent;
+use std::error::Error;
 use clap::{Arg, App, SubCommand};
+use futures::StreamExt;
 use shell_command;
 
 // const WS_RPC_CLIENT: &str = "ws://api.testnet.solana.com/";
 
-fn main() {
+#[async_std::main]
+async fn main() -> Result<(), Box<dyn Error>> {
     let matches = App::new("rust-solana-cli")
         .version("0.1.0")
         .author("Soushi888 <sacha.pignot@protonmail.com>")
@@ -22,15 +27,50 @@ fn main() {
         .subcommand(SubCommand::with_name("show-account")
             .about("Show all the tokens of the connected account")
         )
+        .subcommand(SubCommand::with_name("connect")
+            .about("Make a libp2p connection")
+            .arg(Arg::with_name("address")
+                .short("a")
+                .long("address")
+                .required(true)
+                .takes_value(true)
+                .help("Address to connect")))
         .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("create-token") {
         create_token(matches.value_of("name").unwrap().to_string());
-    } else if let Some(matches) = matches.subcommand_matches("show-account") {
+    } else if let Some(_matches) = matches.subcommand_matches("show-account") {
         let show_account_command = shell_command::run_shell_command("spl-token accounts").unwrap();
         println!("Account : {}", show_account_command);
+    } else if let Some(matches) = matches.subcommand_matches("connect") {
+        create_libp2p_connection(matches.value_of("address").unwrap().to_string()).await?;
     } else {
         println!("rust-solana-cli is a program for creating a Solana Toekn (SPL) on the Solana Testnet and register its name.");
+    }
+
+    Ok(())
+}
+
+async fn create_libp2p_connection(address: String) -> Result<(), Box<dyn Error>> {
+    let local_key = identity::Keypair::generate_ed25519();
+    let local_peer_id = PeerId::from(local_key.public());
+    println!("Local peer id : {:?}\n", local_peer_id);
+
+    let transport = libp2p::development_transport(local_key.clone()).await?;
+    let behaviour = Ping::new(PingConfig::new().with_keep_alive(true));
+    let mut swarm = Swarm::new(transport, behaviour, local_peer_id);
+    swarm.listen_on("/ip4/0.0.0.0/tcp/0".parse()?)?;
+
+    let remote: Multiaddr = address.parse()?;
+    swarm.dial(remote)?;
+    println!("Dialed {}", address);
+
+    loop {
+        match swarm.select_next_some().await {
+            SwarmEvent::NewListenAddr { address, .. } => println!("Listening on {:?}", address),
+            SwarmEvent::Behaviour(event) => println!("{:?}", event),
+            _ => {}
+        }
     }
 }
 
