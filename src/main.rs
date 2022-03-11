@@ -1,10 +1,8 @@
 // use libp2p::websocket;
-extern crate clap;
-
 use clap::{Arg, App, SubCommand};
 use shell_command;
 
-const WS_RPC_CLIENT: &str = "ws://api.testnet.solana.com/";
+// const WS_RPC_CLIENT: &str = "ws://api.testnet.solana.com/";
 
 fn main() {
     let matches = App::new("rust-solana-cli")
