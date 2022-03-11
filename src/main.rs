@@ -7,10 +7,10 @@ use shell_command;
 const WS_RPC_CLIENT: &str = "ws://api.testnet.solana.com/";
 
 fn main() {
-    let matches = App::new("rust-solana-libp2p")
+    let matches = App::new("rust-solana-cli")
         .version("0.1.0")
         .author("Soushi888 <sacha.pignot@protonmail.com>")
-        .about("Create a Solana Toekn (SPL) on the Solana Testnet and register its name.")
+        .about("Create a Solana Toekn (SPL) on the Solana Testnet and disable the minting.")
         .subcommand(SubCommand::with_name("create-token")
             .about("Create a Solana Toekn (SPL) on the Solana Testnet")
             .arg(Arg::with_name("name")
@@ -32,12 +32,12 @@ fn main() {
         let show_account_command = shell_command::run_shell_command("spl-token accounts").unwrap();
         println!("Account : {}", show_account_command);
     } else {
-        println!("rust-solana-libp2p is a program for creating a Solana Toekn (SPL) on the Solana Testnet and register its name.");
+        println!("rust-solana-cli is a program for creating a Solana Toekn (SPL) on the Solana Testnet and register its name.");
     }
 }
 
 fn create_token(token_name: String) {
-    println!("Token name : {:?}", token_name);
+    println!("Token name : {:?}\n", token_name);
 
     let check_if_wallet = shell_command::run_shell_command("solana config get").unwrap();
     println!("{}", check_if_wallet);

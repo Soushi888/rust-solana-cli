@@ -1,5 +1,5 @@
 [package]
-name = "rust-solana-libp2p"
+name = "rust-solana-cli"
 version = "0.1.0"
 edition = "2021"
 
