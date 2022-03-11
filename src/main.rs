@@ -6,8 +6,6 @@ use clap::{Arg, App, SubCommand};
 use futures::StreamExt;
 use shell_command;
 
-// const WS_RPC_CLIENT: &str = "ws://api.testnet.solana.com/";
-
 #[async_std::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let matches = App::new("rust-solana-cli")
@@ -28,7 +26,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             .about("Show all the tokens of the connected account")
         )
         .subcommand(SubCommand::with_name("connect")
-            .about("Make a libp2p connection")
+            .about("Make a libp2p connection that ping the address in argument")
             .arg(Arg::with_name("address")
                 .short("a")
                 .long("address")
@@ -76,9 +74,6 @@ async fn create_libp2p_connection(address: String) -> Result<(), Box<dyn Error>>
 
 fn create_token(token_name: String) {
     println!("Token name : {:?}\n", token_name);
-
-    let check_if_wallet = shell_command::run_shell_command("solana config get").unwrap();
-    println!("{}", check_if_wallet);
 
     let create_token_command = shell_command::run_shell_command("spl-token create-token").unwrap();
     let mut create_token_result = create_token_command.split(" ");
