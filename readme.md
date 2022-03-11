@@ -1,4 +1,4 @@
-# Rust Solana libp2p program
+# Rust Solana CLI program
 
 This program is of Proof of Concept for creating a Solana Token (SPL Token), minting 10_000_000 of it, disable theminting and show the balance for this token with the command `rust-solana-cli create-token --name=<token-name>`.
 
