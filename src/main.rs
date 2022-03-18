@@ -1,3 +1,5 @@
+mod libp2p_chat;
+
 use libp2p::{identity, Multiaddr, PeerId, Swarm};
 use libp2p::ping::{Ping, PingConfig};
 use libp2p::swarm::SwarmEvent;
@@ -33,6 +35,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 .required(true)
                 .takes_value(true)
                 .help("Address to connect")))
+        .subcommand(SubCommand::with_name("chat")
+            .about("Launch a libp2p chat client")
+            .arg(Arg::with_name("address")
+                .short("a")
+                .long("address")
+                // .required(true)
+                .takes_value(true)
+                .help("Address to connect")))
         .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("create-token") {
@@ -42,8 +52,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
         println!("Account : {}", show_account_command);
     } else if let Some(matches) = matches.subcommand_matches("connect") {
         create_libp2p_connection(matches.value_of("address").unwrap().to_string()).await?;
+    } else if let Some(matches) = matches.subcommand_matches("chat") {
+        let address = match matches.value_of("address") {
+            Some(str) => { str.to_string() }
+            None => { "/ip4/0.0.0.0/tcp/0".to_string() }
+        };
+        libp2p_chat::libp2p_chat(address).await?;
     } else {
-        println!("rust-solana-cli is a program for creating a Solana Toekn (SPL) on the Solana Testnet and register its name.");
+        println!("rust-solana-cli is a program for creating a Solana Toekn (SPL) on the Solana Testnet \
+        and register its name. Use the command `help` for more informations.");
     }
 
     Ok(())
