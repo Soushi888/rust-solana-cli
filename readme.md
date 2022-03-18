@@ -68,14 +68,14 @@ You can of course open more terminal windows and add more participants.
 Dialing any of the other peers will propagate the new participant to all
 chat members and everyone will receive all messages.
 
-# If they don't automatically connect
+### If they don't automatically connect
 
 If the nodes don't automatically connect, take note of the listening addresses of the first
 instance and start the second with one of the addresses as the first argument. In the first
 terminal window, run:
 
 ```sh
-cargo run --example chat
+rust-solana-cli chat
 ```
 
 It will print the PeerId and the listening addresses, e.g. `Listening on
@@ -84,7 +84,7 @@ It will print the PeerId and the listening addresses, e.g. `Listening on
 In the second terminal window, start a new instance of the example with:
 
 ```sh
-cargo run --example chat -- /ip4/127.0.0.1/tcp/24915
+rust-solana-cli chat --address=/ip4/127.0.0.1/tcp/24915
 ```
 
 The two nodes then connect.

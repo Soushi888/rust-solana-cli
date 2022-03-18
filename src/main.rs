@@ -55,7 +55,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     } else if let Some(matches) = matches.subcommand_matches("chat") {
         let address = match matches.value_of("address") {
             Some(str) => { str.to_string() }
-            None => { "/ip4/0.0.0.0/tcp/0".to_string() }
+            None => { "".to_string() }
         };
         libp2p_chat::libp2p_chat(address).await?;
     } else {
